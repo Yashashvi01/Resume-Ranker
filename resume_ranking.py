@@ -196,9 +196,7 @@ def generate_insights(text, job_description,combined_similarity, file):
         "1. **Candidate's Strengths:**\n"
         "- [List of skills and qualifications matching the job description in not more than 5 points]\n\n"
         "2. **Areas for Improvement:**\n"
-        "- [List of missing or weak areas in the candidate's resume in not more than 5 points]\n\n"
-        "3. **Overall Score:**\n"
-        "- [Score the resume as a strict percentage out of 100 based on combined_similarity and the insights you provided and highlight this score in bold at the end]",
+        "- [List of missing or weak areas in the candidate's resume in not more than 5 points]\n\n",
         f"combined_similarity: {combined_similarity:.2f}",
         img_jd,
         img_res,

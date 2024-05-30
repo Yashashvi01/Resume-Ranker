@@ -127,12 +127,11 @@ def calculate_combined_similarity(tfidf_similarity, cos_similarity, vsm_similari
     return combined_similarity * 100
 
 # Define function to select folder and process resumes
-def process_resumes(folder_path, job_description):
-    files = [os.path.join(folder_path, file) for file in os.listdir(folder_path) if file.endswith('.pdf')]
+def process_resumes(uploaded_files, job_description):
 
     scores = []
 
-    for file in files:
+    for file in uploaded_files:
         # Read PDF file
         text1 = read_pdf(file)
 
@@ -169,13 +168,13 @@ def generate_insights(text, job_description, file):
     ).generate(job_description)
 
     # Save the WordCloud images
-    resume_wordcloud_filename = f"wordcloud_resume_{os.path.splitext(os.path.basename(file))[0]}.png"
+    resume_wordcloud_filename = f"wordcloud_resume_{os.path.splitext(file.name)[0]}.png"
     resume_wordcloud.to_file(resume_wordcloud_filename)
     jd_wordcloud_filename = "wordcloud_job_description.png"
     jd_wordcloud.to_file(jd_wordcloud_filename)
 
     # Display WordCloud images using Streamlit
-    st.subheader(f"WordCloud for {os.path.splitext(os.path.basename(file))[0]}")
+    st.subheader(f"WordCloud for {os.path.splitext(file.name)[0]}")
     st.image(resume_wordcloud_filename)
     st.subheader("WordCloud for Job Description")
     st.image(jd_wordcloud_filename)
@@ -203,14 +202,14 @@ def generate_insights(text, job_description, file):
     # Display the insights with animations
     with st.spinner('Generating insights...') :
         time.sleep(2)  # Simulate processing time
-        st.subheader(f"Google Gemini Response About {os.path.splitext(os.path.basename(file))[0]}")
+        st.subheader(f"Google Gemini Response About {os.path.splitext(file.name)[0]}")
         st.markdown(response.text)
 
 # Main Streamlit app
 st.title("Resume Ranker")
 
-# Upload folder of resumes
-folder_path = st.text_input("Enter the folder path containing resumes (e.g., '/path/to/folder')", key='folder_path')
+# Upload resumes
+uploaded_files = st.file_uploader("Upload resumes", accept_multiple_files=True, type=["pdf"])
 
 # Job description input
 job_description = st.text_area("Enter the required job description", key='job_description')
@@ -219,11 +218,11 @@ job_description = st.text_area("Enter the required job description", key='job_de
 num_resumes = st.selectbox("Select number of top resumes to display", [5, 10, 15, 20, 25, 30, 35, 40], key='num_resumes')
 
 if st.button("Process Resumes"):
-    if folder_path and job_description:
-        ranked_resumes = process_resumes(folder_path, job_description)
+    if uploaded_files and job_description:
+        ranked_resumes = process_resumes(uploaded_files, job_description)
         st.divider()
         for rank, (file, combined_similarity ,resume_text) in enumerate(ranked_resumes[:num_resumes], start=1):
-            st.subheader(f"Rank {rank}: {os.path.splitext(os.path.basename(file))[0]}")
+            st.subheader(f"Rank {rank}: {os.path.splitext(file.name)[0]}")
             st.write(f"The Resume is a **{combined_similarity:.2f}%** match with the given job description")
             generate_insights(resume_text, job_description, file)
             st.divider()

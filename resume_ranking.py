@@ -156,7 +156,7 @@ def process_resumes(uploaded_files, job_description):
 
     return scores
 
-def generate_insights(text, job_description, file):
+def generate_insights(text, job_description,combined_similarity, file):
     # Specify a TrueType font path
     font_path = './arial.ttf'
 
@@ -198,7 +198,8 @@ def generate_insights(text, job_description, file):
         "2. **Areas for Improvement:**\n"
         "- [List of missing or weak areas in the candidate's resume in not more than 5 points]\n\n"
         "3. **Overall Score:**\n"
-        "- [Score the resume as a strict percentage out of 100 and highlight this score in bold at the end]",
+        "- [Score the resume as a strict percentage out of 100 based on combined_similarity and the insights you provided and highlight this score in bold at the end]",
+        f"combined_similarity: {combined_similarity:.2f}",
         img_jd,
         img_res,
     ])
@@ -207,7 +208,7 @@ def generate_insights(text, job_description, file):
     # Display the insights with animations
     with st.spinner('Generating insights...') :
         time.sleep(2)  # Simulate processing time
-        st.subheader(f"Google Gemini Response About {os.path.splitext(file.name)[0]}")
+        st.subheader(f"Google Gemini Response About {os.path.splitext(file.name)[0]} Resume")
         st.markdown(response.text)
 
 # Main Streamlit app
@@ -219,6 +220,36 @@ uploaded_files = st.file_uploader("Upload resumes", accept_multiple_files=True, 
 # Job description input
 job_description = st.text_area("Enter the required job description", key='job_description')
 
+st.markdown("Demo Full stack Developer Job Description")
+st.caption("**Job brief**\n")
+st.caption("We are looking for a Full Stack Developer to produce scalable software solutions. You’ll be part of a cross-functional team that’s responsible for the full software development life cycle, from conception to deployment."
+        "As a Full Stack Developer, you should be comfortable around both front-end and back-end coding languages, development frameworks and third-party libraries. You should also be a team player with a knack for visual design and utility."
+        "If you’re also familiar with Agile methodologies, we’d like to meet you.\n")
+st.caption("**Responsibilities**\n")
+st.caption("Work with development teams and product managers to ideate software solutions"
+        "Design client-side and server-side architecture"
+        "Build the front-end of applications through appealing visual design"
+        "Develop and manage well-functioning databases and applications"
+        "Write effective APIs"
+        "Test software to ensure responsiveness and efficiency"
+        "Troubleshoot, debug and upgrade software"
+        "Create security and data protection settings"
+        "Build features and applications with a mobile responsive design"
+        "Write technical documentation"
+        "Work with data scientists and analysts to improve software\n")
+st.caption("**Requirements and skills**\n")
+st.caption("Proven experience as a Full Stack Developer or similar role"
+        "Experience developing desktop and mobile applications"
+        "Familiarity with common stacks"
+        "Knowledge of multiple front-end languages and libraries (e.g. HTML/ CSS, JavaScript, XML, jQuery)"
+        "Knowledge of multiple back-end languages (e.g. C#, Java, Python) and JavaScript frameworks (e.g. Angular, React, Node.js)"
+        "Familiarity with databases (e.g. MySQL, MongoDB), web servers (e.g. Apache) and UI/UX design"
+        "Excellent communication and teamwork skills"
+        "Great attention to detail"
+        "Organizational skills"
+        "An analytical mind"
+        "Degree in Computer Science, Statistics or relevant field")
+
 # Number of resumes to display input
 num_resumes = st.selectbox("Select number of top resumes to display", [5, 10, 15, 20, 25, 30, 35, 40], key='num_resumes')
 
@@ -229,7 +260,7 @@ if st.button("Process Resumes"):
         for rank, (file, combined_similarity ,resume_text) in enumerate(ranked_resumes[:num_resumes], start=1):
             st.subheader(f"Rank {rank}: {os.path.splitext(file.name)[0]}")
             st.write(f"The Resume is a **{combined_similarity:.2f}%** match with the given job description")
-            generate_insights(resume_text, job_description, file)
+            generate_insights(resume_text, job_description,combined_similarity, file)
             st.divider()
         
         # Generate insights for the resumes

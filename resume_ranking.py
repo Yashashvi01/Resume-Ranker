@@ -13,6 +13,11 @@ import google.generativeai as genai
 from wordcloud import WordCloud
 import PIL.Image
 import time
+import nltk
+
+# Ensure NLTK data files are available
+nltk.download('punkt')
+nltk.download('stopwords')
 
 # Initialize the Porter stemmer
 porter = PorterStemmer()

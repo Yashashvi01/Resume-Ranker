@@ -44,7 +44,7 @@ Welcome to the Resume Ranker App! This project aims to streamline the hiring pro
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/resume-ranker-app.git
+   git clone https://github.com/Yashashvi01/resume-ranker-app.git
    cd resume-ranker-app
 2. Install the required packages:
    ```sh

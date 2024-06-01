@@ -27,10 +27,6 @@ Welcome to the Resume Ranker App! This project aims to streamline the hiring pro
 8. **AI-Powered Insights**: Uses Google Generative AI to provide detailed insights on each candidate's strengths and areas for improvement.
 9. **Interactive Interface**: Streamlit's interactive features make the app user-friendly and easy to navigate.
 
-## 🖥️ Demonstration
-
-Check out a detailed video demonstration of the Resume Ranker App [here]("C:\Users\Yashashvi Mann\Downloads\Untitled video - Made with Clipchamp.mp4").
-
 ## 📈 How It Works
 
 1. **Upload Resumes**: Users can upload multiple PDF resumes at once.
